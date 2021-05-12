@@ -1,7 +1,20 @@
-button {
-  width: 50px;
-  margin-right: 10px;
-  padding: 3px;
+* {
+  font-family: Arial, serif;
+  font-size: 18px;
+}
+
+select {
+  width: 200px;
+  padding: 4px;
+  margin: 20px;
+}
+
+ul {
+  padding-bottom: 10px;
+}
+
+li {
+  padding: 3px 0;
 }
 
 #list {

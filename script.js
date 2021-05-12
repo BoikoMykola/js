@@ -19,31 +19,27 @@ function randomMath() {
 }
 
 //Слушатель загрузки страницы
-document.addEventListener("DOMContentLoaded", getButtons);
+document.addEventListener("DOMContentLoaded", getSelect);
 
-//Функция вывода на экран кнопок с буквами массива.
-function getButtons() {
+//Функция вывода на экран элемента select с буквами массива.
+function getSelect() {
     let arr = randomMath();
     let variant = document.getElementById('variants');
+    let select = document.createElement("select");
+    select.options[select.options.length] = new Option("Select letter", "letter");
+    select.options[0].disabled = true;
     arr.forEach(item => {
-        let newElem = document.createElement("button");
-        newElem.innerText = item;
-        newElem.setAttribute('id', item)
-        variant.appendChild(newElem);
+        select.options[select.options.length] = new Option(item, item);
     })
-    let buttons = document.getElementsByTagName("button");
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", function(event) {
-            buttonsControl(event.target);
-        }, false);
-    }
-}
+    let form = document.createElement("form")
+    form.appendChild(select)
+    variant.appendChild(form);
 
+    select.addEventListener("change", function () {
+        letter = this.value;
+        sendRequest();
+    }, false);
 
-//Функция получения значения нажатой кнопки.
-function buttonsControl(button) {
-    letter = button.innerHTML;
-    sendRequest();
 }
 
 //Функция запроса информации с файла .json
@@ -65,7 +61,7 @@ function sendRequest() {
             localStorage.list = this.response;
             arrList = JSON.parse(localStorage.list);
             let newArrList = getList(arrList);
-            if(newArrList.length === 0){
+            if (newArrList.length === 0) {
                 empty()
             } else {
                 viewList(newArrList);
@@ -78,11 +74,11 @@ function sendRequest() {
 function getList(arrList) {
     let newArrList = [];
     arrList.forEach(item => {
-        if(item.name[0] === letter){
+        if (item.name[0] === letter) {
             newArrList.push(item.name)
         }
     })
-return newArrList;
+    return newArrList;
 }
 
 //Функция вывода на экран списка имен на указанную букву.
@@ -107,5 +103,5 @@ function empty() {
     let newElement = document.createElement("div");
     newElement.setAttribute('id', 'list');
     newElement.innerText = 'There are no names for this letter in the database.';
-variant.replaceWith(newElement)
+    variant.replaceWith(newElement)
 }
